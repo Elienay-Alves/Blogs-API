@@ -13,7 +13,7 @@ const User = (sequelize, DataTypes) => {
     image: DataTypes.STRING,
   },
     {
-      timestamps: 'false',
+      timestamps: false,
     });
   User.associate = (models) => {
     User.hasMany(models.BlogPost, {

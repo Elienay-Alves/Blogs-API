@@ -9,14 +9,8 @@ const Category = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
   },
     {
-      timestamps: 'false',
+      timestamps: false,
     });
-
-  Category.associate = (models) => {
-    Category.belongsToMany(models.User, {
-      foreignKey: 'userId', as: 'user'
-    });
-  };
 
   return Category;
 }

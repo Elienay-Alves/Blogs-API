@@ -2,7 +2,7 @@ require('dotenv').config();
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 const { User } = require('../database/models');
-const { invalidField } = require('./dinamicErrors');
+const { errorHandler } = require('./dinamicError');
 
 const myPrecious = process.env.JWT_SECRET;
 
@@ -42,7 +42,7 @@ const LoginS = {
       raw: true,
     });
 
-    if (!row || row.password !== password) invalidField();
+    if (!row || row.password !== password) errorHandler('InvalidFieldsError', 'Invalid fields');
     const { password: _, ...newRow } = row;
 
     return newRow;

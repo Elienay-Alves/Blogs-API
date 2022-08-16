@@ -1,28 +1,37 @@
-'use strict';
-const User = (sequelize, DataTypes) => {
-  const User = sequelize.define("User", {
-    id: {
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      type: DataTypes.INTEGER
-    },
-    displayName: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    image: DataTypes.STRING,
+const { DataTypes } = require('sequelize');
+
+const atributtes = {
+  id: {
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+    type: DataTypes.INTEGER
   },
-    {
-      timestamps: false,
-    });
-  User.associate = (models) => {
-    User.hasMany(models.BlogPost, {
-      foreignKey: 'userId', as: 'posts'
-    });
-  };
+  displayName: {
+    type: DataTypes.STRING
+  },
+  email: {
+    type: DataTypes.STRING,
+    unique: true
+  },
+  password: {
+    type: DataTypes.STRING
+  },
+  image: {
+    type: DataTypes.STRING
+  },
+};
 
-  return User;
+module.exports = (sequelize) => {
 
-}
-
-module.exports = User;
+  const model = sequelize.define('User', atributtes, {
+    tableName: 'Users',
+    timestamps: false
+  });
+  model.associate = (models) => {
+    model.hasMany(models.BlogPost, {
+      foreingKey: 'userId',
+    })
+  }
+  return model;
+};

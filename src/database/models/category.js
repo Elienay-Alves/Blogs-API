@@ -1,18 +1,21 @@
-const Category = (sequelize, DataTypes) => {
-  const Category = sequelize.define("Category", {
-    id: {
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      type: DataTypes.INTEGER
-    },
-    name: DataTypes.STRING,
+const { DataTypes } = require('sequelize');
+const atributtes = {
+  id: {
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+    type: DataTypes.INTEGER
   },
-    {
-      timestamps: false,
-    });
+  name: {
+    type: DataTypes.STRING
+  },
+};
 
-  return Category;
-}
+module.exports = (sequelize) => {
 
-module.exports = Category;
+  const model = sequelize.define('Category', atributtes, {
+    tableName: 'Categories',
+    timestamps: false
+  });
+  return model;
+};

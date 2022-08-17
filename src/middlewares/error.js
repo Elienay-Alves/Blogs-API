@@ -1,6 +1,7 @@
 const errors = {
   ValidationError: 400,
   InvalidFieldsError: 400,
+  TokenValidationError: 401,
   NotFoundError: 404,
   ConflictError: 409,
 };

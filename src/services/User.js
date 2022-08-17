@@ -16,12 +16,32 @@ const UserS = {
     return validation;
   },
 
+  async getAll() {
+    const rows = await User.findAll({
+      raw: true,
+      attributes: { exclude: ['password'] },
+    });
+
+    return rows;
+  },
+
   async getUser(body) {
     const row = await User.findOne({
       where: { email: body.email },
     });
 
     if (row) errorHandler('ConflictError', 'User already registered');
+
+    return row;
+  },
+
+  async getById(id) {
+    const row = await User.findByPk(id, {
+      raw: true,
+      attributes: { exclude: ['password'] },
+    });
+
+    if (!row) errorHandler('NotFoundError', 'User does not exist');
 
     return row;
   },

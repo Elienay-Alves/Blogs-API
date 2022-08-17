@@ -70,6 +70,22 @@ const BlogPostC = {
 
     res.status(200).json(result);
   },
+
+  async delete(req, res) {
+    const token = req.headers.authorization;
+    
+    if (!token) errorHandler('TokenValidationError', 'Token not found');
+    
+    const { id } = await tokenValidation.validateToken(token);
+    const post = await BlogPostS.getById(req.params.id);
+
+    if (!post) errorHandler('NotFoundError', 'Post does not exist');
+    if (post.userId !== id) errorHandler('TokenValidationError', 'Unauthorized user');
+
+    await BlogPostS.delete(req.params);
+
+    res.send(204);
+  },
 };
 
 module.exports = BlogPostC;

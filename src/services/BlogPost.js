@@ -17,6 +17,20 @@ const BlogPostS = {
     return validation;
   },
 
+  async validateBodyOnUpdate(body) {
+    const schema = Joi.object({
+      title: Joi.string().required(),
+      content: Joi.string().required(),
+    }).messages({
+      'string.empty': 'Some required fields are missing',
+      'any.required': 'Some required fields are missing',
+    });
+
+    const validation = await schema.validateAsync(body);
+
+    return validation;
+  },
+
   async getAll() {
     const posts = await models.BlogPost.findAll({
       attributes: { exclude: ['UserId'] },
@@ -52,7 +66,7 @@ const BlogPostS = {
 
     return post;
   },
-  
+
   async create({ title, content }, id) {
     const published = new Date();
     const updated = new Date();
@@ -67,6 +81,12 @@ const BlogPostS = {
     const postCategory = await models.PostCategory.create({ postId, categoryId });
 
     return postCategory;
+  },
+
+  async update(body, id) {
+    const updated = await models.BlogPost.update(body, { where: { id } });
+
+    return updated;
   },
 };
 

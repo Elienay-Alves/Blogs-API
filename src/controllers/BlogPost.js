@@ -50,6 +50,26 @@ const BlogPostC = {
 
     res.status(201).json(result);
   },
+
+  async update(req, res) {
+    const token = req.headers.authorization;
+    
+    if (!token) errorHandler('TokenValidationError', 'Token not found');
+    
+    const { id } = await tokenValidation.validateToken(token);
+
+    await BlogPostS.validateBodyOnUpdate(req.body);
+
+    const post = await BlogPostS.getById(req.params.id);
+
+    if (post.userId !== id) errorHandler('TokenValidationError', 'Unauthorized user');
+
+    await BlogPostS.update(req.body, req.params.id);
+
+    const result = await BlogPostS.getById(req.params.id);
+
+    res.status(200).json(result);
+  },
 };
 
 module.exports = BlogPostC;

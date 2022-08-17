@@ -17,15 +17,21 @@ const CategoriesS = {
       raw: true,
       attributes: { exclude: ['password'] },
     });
-
+    
     return rows;
   },
-
+  
+  async getById(id) {
+    const result = await Category.findByPk(id);
+    return result;
+  },
+  
   async create(body) {
     const newUser = await Category.create(body, { raw: true });
     
     return newUser;
   },
+
 };
 
 module.exports = CategoriesS;

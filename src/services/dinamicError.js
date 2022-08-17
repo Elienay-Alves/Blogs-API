@@ -3,11 +3,6 @@ const errorHandler = (name, message) => {
   err.name = name;
   throw err;
 };
-
-// const alreadyExists = (message) => {
-//   const error
-// }
-
 module.exports = {
   errorHandler,
 };

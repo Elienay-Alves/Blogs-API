@@ -12,6 +12,15 @@ const CategoriesS = {
     return validation;
   },
 
+  async getAll() {
+    const rows = await Category.findAll({
+      raw: true,
+      attributes: { exclude: ['password'] },
+    });
+
+    return rows;
+  },
+
   async create(body) {
     const newUser = await Category.create(body, { raw: true });
     

@@ -13,6 +13,22 @@ const BlogPostC = {
     const result = await BlogPostS.getAll();
     res.json(result);
   },
+
+  async getById(req, res) {
+    const token = req.headers.authorization;
+    
+    if (!token) errorHandler('TokenValidationError', 'Token not found');
+    
+    await tokenValidation.validateToken(token);
+
+    const id = Number(req.params.id);
+    const post = await BlogPostS.getById(id);
+
+    if (!post) errorHandler('NotFoundError', 'Post does not exist');
+
+    res.status(200).json(post);
+  },
+
   async create(req, res) {
     const token = req.headers.authorization;
     

@@ -33,6 +33,26 @@ const BlogPostS = {
     });
     return posts;
 },
+
+  async getById(id) {
+    const post = await models.BlogPost.findOne({
+      where: { id },
+      attributes: { exclude: ['UserId'] },
+      include: [{
+        model: models.User, 
+        as: 'user',
+        attributes: { exclude: ['password'] },
+      },
+    {
+      model: models.Category,
+      as: 'categories',
+      through: { attributes: { exclude: ['postId', 'categoryId'] } },
+    }],
+    });
+
+    return post;
+  },
+  
   async create({ title, content }, id) {
     const published = new Date();
     const updated = new Date();

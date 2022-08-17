@@ -13,7 +13,6 @@ const attributes = {
   },
 };
 
-/** @param {import('sequelize').Sequelize} sequelize */
 module.exports = (sequelize) => {
   const categories = sequelize.define('Category', attributes, { tableName: 'Categories' , timestamps: false });
   return categories;

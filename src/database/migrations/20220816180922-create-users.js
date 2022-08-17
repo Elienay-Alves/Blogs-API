@@ -1,34 +1,34 @@
 'use strict';
-module.exports = {
-/**
-  * @param {import('sequelize').QueryInterface} queryInterface
-  * @param {import('sequelize').Sequelize} Sequelize
-*/
 
-  up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Users', {
+module.exports = {
+  up: async (queryInterface, DataTypes) => {
+    return queryInterface.createTable('Users', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: DataTypes.INTEGER,
       },
       displayName: {
-        type: Sequelize.STRING
+        allowNull: false,
+        type: DataTypes.STRING,
       },
       email: {
-        type: Sequelize.STRING,
-        unique: true
+        allowNull: false,
+        type: DataTypes.STRING,
       },
       password: {
-        type: Sequelize.STRING
+        allowNull: true,
+        type: DataTypes.STRING,
       },
       image: {
-        type: Sequelize.STRING
-      },
+        allowNull: false,
+        type: DataTypes.STRING,
+      }
     });
   },
+
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Users');
+    return queryInterface.dropTable('Users');
   }
-}; 
+};

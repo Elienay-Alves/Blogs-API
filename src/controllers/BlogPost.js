@@ -92,6 +92,7 @@ const BlogPostC = {
     if (!token) errorHandler('TokenValidationError', NOT_FOUND);
     
     const { id } = await tokenValidation.validateToken(token);
+    
     const post = await BlogPostS.getById(req.params.id);
 
     if (!post) errorHandler('NotFoundError', 'Post does not exist');

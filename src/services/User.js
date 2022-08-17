@@ -53,8 +53,12 @@ const UserS = {
   },
 
   async delete(id) {
-    await User.destroy({ where: { id } });
-    },
+    await User.destroy({ 
+      where: {
+        id,
+      },
+    });
+  },
 };
 
 module.exports = UserS;

@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const { BlogPost, PostCategory } = require('../database/models');
+const models = require('../database/models');
 
 const BlogPostS = {
   async validateBody(body) {
@@ -17,10 +17,26 @@ const BlogPostS = {
     return validation;
   },
 
+  async getAll() {
+    const posts = await models.BlogPost.findAll({
+      attributes: { exclude: ['UserId'] },
+      include: [{
+        model: models.User, 
+        as: 'User',
+        attributes: { exclude: ['password'] },
+      },
+    {
+      model: models.Category,
+      as: 'categories',
+      through: { attributes: { exclude: ['postId', 'categoryId'] } },
+    }],
+    });
+    return posts;
+},
   async create({ title, content }, id) {
     const published = new Date();
     const updated = new Date();
-    const post = await BlogPost.create(
+    const post = await models.BlogPost.create(
       { title, content, userId: id, published, updated }, { raw: true },
       );
     
@@ -28,7 +44,7 @@ const BlogPostS = {
   },
 
   async createPostCategory(postId, categoryId) {
-    const postCategory = await PostCategory.create({ postId, categoryId });
+    const postCategory = await models.PostCategory.create({ postId, categoryId });
 
     return postCategory;
   },

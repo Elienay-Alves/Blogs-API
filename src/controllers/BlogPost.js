@@ -4,6 +4,15 @@ const tokenValidation = require('../middlewares/tokenValidation');
 const { errorHandler } = require('../services/dinamicError');
 
 const BlogPostC = {  
+  async getAll(req, res) {
+    const token = req.headers.authorization;
+    
+    if (!token) errorHandler('TokenValidationError', 'Token not found');
+    
+    await tokenValidation.validateToken(token);
+    const result = await BlogPostS.getAll();
+    res.json(result);
+  },
   async create(req, res) {
     const token = req.headers.authorization;
     

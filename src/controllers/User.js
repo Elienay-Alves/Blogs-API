@@ -38,6 +38,18 @@ const UserC = {
 
     res.status(201).json({ token });
   },
+
+  async delete(req, res) {
+    const token = req.headers.authorization;
+    
+    if (!token) errorHandler('TokenValidationError', 'Token not found');
+    
+    const { id } = await tokenValidation.validateToken(token);
+
+    await UserS.delete(id);
+
+    res.sendStatus(204);
+  },
 };
 
 module.exports = UserC;

@@ -3,11 +3,13 @@ const CategoriesS = require('../services/Categories');
 const tokenValidation = require('../middlewares/tokenValidation');
 const { errorHandler } = require('../services/dinamicError');
 
+const NOT_FOUND = 'Token not found';
+
 const BlogPostC = {  
   async getAll(req, res) {
     const token = req.headers.authorization;
     
-    if (!token) errorHandler('TokenValidationError', 'Token not found');
+    if (!token) errorHandler('TokenValidationError', NOT_FOUND);
     
     await tokenValidation.validateToken(token);
     const result = await BlogPostS.getAll();
@@ -17,7 +19,7 @@ const BlogPostC = {
   async getById(req, res) {
     const token = req.headers.authorization;
     
-    if (!token) errorHandler('TokenValidationError', 'Token not found');
+    if (!token) errorHandler('TokenValidationError', NOT_FOUND);
     
     await tokenValidation.validateToken(token);
 
@@ -32,7 +34,7 @@ const BlogPostC = {
   async create(req, res) {
     const token = req.headers.authorization;
     
-    if (!token) errorHandler('TokenValidationError', 'Token not found');
+    if (!token) errorHandler('TokenValidationError', NOT_FOUND);
     
     const { id } = await tokenValidation.validateToken(token);
 
@@ -54,7 +56,7 @@ const BlogPostC = {
   async update(req, res) {
     const token = req.headers.authorization;
     
-    if (!token) errorHandler('TokenValidationError', 'Token not found');
+    if (!token) errorHandler('TokenValidationError', NOT_FOUND);
     
     const { id } = await tokenValidation.validateToken(token);
 
@@ -74,7 +76,7 @@ const BlogPostC = {
   async delete(req, res) {
     const token = req.headers.authorization;
     
-    if (!token) errorHandler('TokenValidationError', 'Token not found');
+    if (!token) errorHandler('TokenValidationError', NOT_FOUND);
     
     const { id } = await tokenValidation.validateToken(token);
     const post = await BlogPostS.getById(req.params.id);
@@ -82,7 +84,7 @@ const BlogPostC = {
     if (!post) errorHandler('NotFoundError', 'Post does not exist');
     if (post.userId !== id) errorHandler('TokenValidationError', 'Unauthorized user');
 
-    await BlogPostS.delete(req.params);
+    await BlogPostS.delete(req.params.id);
 
     res.send(204);
   },

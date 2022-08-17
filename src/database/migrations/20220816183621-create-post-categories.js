@@ -2,15 +2,11 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('PostCategories', {
-      // id: {
-      //   allowNull: false,
-      //   autoIncrement: true,
-      //   primaryKey: true,
-      //   type: Sequelize.INTEGER
-      // },
       postId: {
         type: Sequelize.INTEGER,
         primaryKey: true,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
         references: {
           model: 'BlogPosts',
           key: 'id'
@@ -19,19 +15,13 @@ module.exports = {
       categoryId: {
         type: Sequelize.INTEGER,
         primaryKey: true,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
         references: {
           model: 'Categories',
           key: 'id'
         }
       },
-      // createdAt: {
-      //   allowNull: false,
-      //   type: Sequelize.DATE
-      // },
-      // updatedAt: {
-      //   allowNull: false,
-      //   type: Sequelize.DATE
-      // }
     });
   },
   down: async (queryInterface) => {

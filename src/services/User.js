@@ -51,6 +51,10 @@ const UserS = {
     
     return newUser;
   },
+
+  async delete(id) {
+    await User.destroy({ where: { id } });
+    },
 };
 
 module.exports = UserS;

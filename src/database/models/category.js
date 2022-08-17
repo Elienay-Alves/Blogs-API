@@ -1,21 +1,20 @@
 const { DataTypes } = require('sequelize');
-const atributtes = {
+
+const attributes = {
   id: {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
-    type: DataTypes.INTEGER
+    type: DataTypes.INTEGER,
   },
   name: {
-    type: DataTypes.STRING
+    allowNull: false,
+    type: DataTypes.STRING,
   },
 };
 
+/** @param {import('sequelize').Sequelize} sequelize */
 module.exports = (sequelize) => {
-
-  const model = sequelize.define('Category', atributtes, {
-    tableName: 'Categories',
-    timestamps: false
-  });
-  return model;
-};
+  const categories = sequelize.define('Category', attributes, { tableName: 'Categories' , timestamps: false });
+  return categories;
+}; 

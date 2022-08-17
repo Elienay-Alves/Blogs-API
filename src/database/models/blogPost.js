@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 
-const atributtes = {
+const attributes = {
   id: {
     allowNull: false,
     autoIncrement: true,
@@ -9,34 +9,33 @@ const atributtes = {
   },
   title: {
     type: DataTypes.STRING,
+    allowNull: false,
   },
   content: {
     type: DataTypes.STRING,
+    allowNull: false,
   },
   userId: {
     type: DataTypes.INTEGER,
-    foreignKey: true,
+    allowNull: false,
+    onDelete: 'CASCADE',
+    references: {
+      model: 'Users',
+      key: 'id',
+    },
   },
   published: {
-    allowNull: false,
     type: DataTypes.DATE,
-    field: 'published',
   },
   updated: {
-    allowNull: false,
     type: DataTypes.DATE,
   },
 };
 
 module.exports = (sequelize) => {
-const model = sequelize.define('BlogPost', atributtes, {
-  tableName: 'BlogPosts',
-  timestamps: false,
-});
-  model.associate = (models) => {
-    model.belongsTo(models.User, {
-      foreignKey: 'userId',
-    });
+  const blogPost = sequelize.define('BlogPost', attributes, { tableName: 'BlogPosts', timestamps: false });
+  blogPost.associate = (models) => {
+    blogPost.belongsTo(models.User, { foreignKey: 'userId', as: 'user'});
   };
-return model;
+  return blogPost;
 }; 

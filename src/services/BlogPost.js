@@ -22,7 +22,7 @@ const BlogPostS = {
       attributes: { exclude: ['UserId'] },
       include: [{
         model: models.User, 
-        as: 'User',
+        as: 'user',
         attributes: { exclude: ['password'] },
       },
     {

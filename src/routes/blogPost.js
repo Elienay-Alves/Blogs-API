@@ -4,6 +4,7 @@ const BlogPostC = require('../controllers/BlogPost');
 const router = Router();
 
 router.post('/', BlogPostC.create);
+router.get('/search', BlogPostC.search);
 router.get('/:id', BlogPostC.getById);
 router.get('/', BlogPostC.getAll);
 router.put('/:id', BlogPostC.update);

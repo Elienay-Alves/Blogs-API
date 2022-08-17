@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { Op } = require('sequelize');
 const models = require('../database/models');
 
 const BlogPostS = {
@@ -81,6 +82,26 @@ const BlogPostS = {
     const postCategory = await models.PostCategory.create({ postId, categoryId });
 
     return postCategory;
+  },
+
+  async search(q) {
+    const post = await models.BlogPost.findAll({
+      where: {
+        [Op.or]: [
+          { title: { [Op.like]: `%${q}%` } },
+          { content: { [Op.like]: `%${q}%` } },
+        ],
+      },
+      attributes: { exclude: ['UserId'] },
+      include: [{ model: models.User, as: 'user', attributes: { exclude: ['password'] },
+    },
+    { model: models.Category,
+      as: 'categories',
+      through: { attributes: { exclude: ['postId', 'categoryId'] } },
+    }],
+    });
+
+    return post;
   },
 
   async update(body, id) {

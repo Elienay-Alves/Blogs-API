@@ -53,6 +53,19 @@ const BlogPostC = {
     res.status(201).json(result);
   },
 
+  async search(req, res) {
+    const { q } = req.query;
+    const token = req.headers.authorization;
+    
+    if (!token) errorHandler('TokenValidationError', NOT_FOUND);
+    
+    await tokenValidation.validateToken(token);
+
+    const post = await BlogPostS.search(q);
+
+    res.status(200).json(post);
+  },
+
   async update(req, res) {
     const token = req.headers.authorization;
     
